@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mapper.SportDataMapper">
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.SportData">
+    <constructor>
+      <idArg column="f_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="f_uid" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="f_baidu_uid" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="f_distance" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="f_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="f_sport_time" javaType="java.lang.Long" jdbcType="BIGINT" />
+      <arg column="f_max_speed" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="f_energy_metabolism" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="f_energy_expenditure" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="f_cyclenumer" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="f_chickenleg" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="f_create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="f_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+
+  <resultMap id="selectBaseResultMap" type="com.ssm.pojo.SportData">
+    <result column="f_distance" property="distance" jdbcType="DECIMAL" />
+    <result column="f_date" property="date" jdbcType="TIMESTAMP" />
+    <result column="f_max_speed" property="maxSpeed" jdbcType="DECIMAL" />
+    <result column="f_sport_time" property="averageTime" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <resultMap id="selectWechatBaseResultMap" type="com.ssm.vo.wechatHistoryVo">
+    <result column="f_distance" property="distance" jdbcType="DECIMAL" />
+    <result column="f_date" property="date" jdbcType="TIMESTAMP" />
+    <result column="f_max_speed" property="maxSpeed" jdbcType="DECIMAL" />
+    <result column="f_sport_time" property="averageTime" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    f_id, f_uid,f_baidu_uid, f_distance, f_date, f_sport_time, f_max_speed, f_energy_metabolism,
+    f_energy_expenditure,f_cyclenumer,f_chickenleg, f_create_time, f_update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sport_data
+    where f_id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--30天历史记录-->
+  <select id="selectThirtyDaysHistory"  resultMap="selectWechatBaseResultMap">
+    SELECT
+    s.f_date date,
+    FORMAT((s.f_distance/1000),2)distance,
+    FORMAT((s.f_distance/s.f_sport_time),2)averageTime,
+    s.f_max_speed maxSpeed
+    FROM
+    t_sport_data s
+    join t_user u on u.baidu_uid=s.f_baidu_uid
+    WHERE
+    s.f_date >= DATE_SUB(now(), INTERVAL 30 DAY)
+    AND s.f_date &lt;= curdate()
+    and u.openid=#{openid}
+
+  </select>
+  <insert id="insert" parameterType="com.ssm.pojo.SportData">
+    insert into t_sport_data (f_id, f_uid,f_baidu_uid, f_distance,
+      f_date, f_sport_time, f_max_speed, 
+      f_energy_metabolism, f_energy_expenditure,f_cyclenumer,f_chickenleg, f_create_time,
+      f_update_time)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR},#{baiduuid,jdbcType=VARCHAR}, #{distance,jdbcType=DECIMAL},
+      #{date,jdbcType=TIMESTAMP}, #{sportTime,jdbcType=BIGINT}, #{maxSpeed,jdbcType=DECIMAL}, 
+      #{energyMetabolism,jdbcType=DECIMAL}, #{energyExpenditure,jdbcType=DECIMAL},
+      #{cyclenumer,jdbcType=DECIMAL},
+      #{chickenleg,jdbcType=DECIMAL},
+      #{createTime,jdbcType=TIMESTAMP},
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.SportData">
+    insert into t_sport_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        f_id,
+      </if>
+      <if test="uid != null">
+        f_uid,
+      </if>
+      <if test="baiduUid != null">
+        f_baidu_uid,
+      </if>
+      <if test="distance != null">
+        f_distance,
+      </if>
+      <if test="date != null">
+        f_date,
+      </if>
+      <if test="sportTime != null">
+        f_sport_time,
+      </if>
+      <if test="maxSpeed != null">
+        f_max_speed,
+      </if>
+      <if test="energyMetabolism != null">
+        f_energy_metabolism,
+      </if>
+      <if test="energyExpenditure != null">
+        f_energy_expenditure,
+      </if>
+      <if test="cyclenumer != null">
+        f_cyclenumer,
+      </if>
+      <if test="chickenleg != null">
+        f_chickenleg,
+      </if>
+      <if test="createTime != null">
+        f_create_time,
+      </if>
+      <if test="updateTime != null">
+        f_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="baiduUid != null">
+        #{baiduUid,jdbcType=VARCHAR},
+      </if>
+      <if test="distance != null">
+        #{distance,jdbcType=DECIMAL},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sportTime != null">
+        #{sportTime,jdbcType=BIGINT},
+      </if>
+      <if test="maxSpeed != null">
+        #{maxSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="energyMetabolism != null">
+        #{energyMetabolism,jdbcType=DECIMAL},
+      </if>
+      <if test="energyExpenditure != null">
+        #{energyExpenditure,jdbcType=DECIMAL},
+      </if>
+      <if test="cyclenumer != null">
+        #{cyclenumer,jdbcType=DECIMAL},
+      </if>
+      <if test="chickenleg != null">
+        #{chickenleg,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.SportData">
+    update t_sport_data
+    <set>
+      <if test="uid != null">
+        f_uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="baiduUid != null">
+        f_baidu_uid = #{baiduUid,jdbcType=VARCHAR},
+      </if>
+      <if test="distance != null">
+        f_distance = #{distance,jdbcType=DECIMAL},
+      </if>
+      <if test="date != null">
+        f_date = #{date,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sportTime != null">
+        f_sport_time = #{sportTime,jdbcType=BIGINT},
+      </if>
+      <if test="maxSpeed != null">
+        f_max_speed = #{maxSpeed,jdbcType=DECIMAL},
+      </if>
+      <if test="energyMetabolism != null">
+        f_energy_metabolism = #{energyMetabolism,jdbcType=DECIMAL},
+      </if>
+      <if test="energyExpenditure != null">
+      f_energy_expenditure = #{energyExpenditure,jdbcType=DECIMAL},
+    </if>
+
+      <if test="cyclenumer != null">
+        f_cyclenumer = #{cyclenumer,jdbcType=DECIMAL},
+      </if>
+      <if test="chickenleg != null">
+        f_chickenleg = #{chickenleg,jdbcType=DECIMAL},
+      </if>
+
+      <if test="createTime != null">
+        f_create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        f_update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where f_id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.SportData">
+    update t_sport_data
+    set f_uid = #{uid,jdbcType=VARCHAR},
+      f_baidu_uid = #{baiduUid,jdbcType=VARCHAR},
+      f_distance = #{distance,jdbcType=DECIMAL},
+      f_date = #{date,jdbcType=TIMESTAMP},
+      f_sport_time = #{sportTime,jdbcType=BIGINT},
+      f_max_speed = #{maxSpeed,jdbcType=DECIMAL},
+      f_energy_metabolism = #{energyMetabolism,jdbcType=DECIMAL},
+      f_energy_expenditure = #{energyExpenditure,jdbcType=DECIMAL},
+      f_cyclenumer = #{cyclenumer,jdbcType=DECIMAL},
+      f_chickenleg = #{chickenleg,jdbcType=DECIMAL},
+      f_create_time = #{createTime,jdbcType=TIMESTAMP},
+      f_update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where f_id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--大屏日运动信息-->
+  <select id="queryAllByUid" resultMap="selectBaseResultMap">
+    select
+          f_id id,
+          f_uid uid,
+          f_baidu_uid baiduUid,
+          f_distance distance,
+          f_date date,
+          f_sport_time sportTime,
+          f_max_speed maxSpeed,
+          f_energy_metabolism energyMetabolism,
+          f_energy_expenditure energyExpenditure,
+          IFNULL(f_cyclenumer,0) cyclenumer,
+          IFNULL(f_chickenleg,0) chickenleg,
+          f_create_time createTime,
+          f_update_time updateTime
+    from t_sport_data
+    where f_uid = #{uid}
+    and f_date>=#{startTime}
+    and f_date&lt;=#{endTime}
+    order by f_date
+</select>
+  <!--微信运动信息-->
+  <select id="queryWechatAllByOpenid" resultMap="selectBaseResultMap">
+  select
+          f_id id,
+          f_uid uid,
+          f_baidu_uid baiduUid,
+          f_distance distance,
+          f_date date,
+          f_sport_time sportTime,
+          f_max_speed maxSpeed,
+          f_energy_metabolism energyMetabolism,
+          f_energy_expenditure energyExpenditure,
+          IFNULL(f_cyclenumer,0) cyclenumer,
+          IFNULL(f_chickenleg,0) chickenleg,
+          f_create_time createTime,
+          f_update_time updateTime
+    from t_sport_data s
+	join t_user u on u.baidu_uid=s.f_baidu_uid
+    where u.openid = #{openid}
+    and s.f_date>=#{startTime}
+    and s.f_date&lt;=#{endTime}
+    order by f_date
+  </select>
+
+  <select id="queryAll" resultMap="selectBaseResultMap">
+      SELECT
+          d.f_id id,
+          d.f_uid uid,
+          d.f_baidu_uid baiduUid,
+          d.f_distance distance,
+          d.f_date date,
+          d.f_sport_time sportTime,
+          d.f_update_time updateTime,
+          d.f_energy_metabolism energyMetabolism,
+          d.f_create_time createTime,
+          d.f_energy_expenditure energyExpenditure,
+          d.f_max_speed maxSpeed,
+          u.image image,
+          d.f_cyclenumer cyclenumer,
+          d.f_chickenleg chickenleg
+      FROM
+          t_sport_data d
+      JOIN t_user u ON u.baidu_uid = d.f_baidu_uid
+      WHERE
+          f_date >= #{startTime}
+      AND f_date &lt;= #{endTime}
+      ORDER BY f_distance DESC
+  </select>
+  <select id="queryByBaiduUid" resultMap="selectBaseResultMap">
+    select
+     f_id id,
+          f_uid uid,
+          f_baidu_uid baiduUid,
+          f_distance distance,
+          f_date date,
+          f_sport_time sportTime,
+          f_max_speed maxSpeed,
+          f_energy_metabolism energyMetabolism,
+          f_energy_expenditure energyExpenditure,
+          IFNULL(f_cyclenumer,0) cyclenumer,
+          IFNULL(f_chickenleg,0) chickenleg,
+          f_create_time createTime,
+          f_update_time updateTime
+    from t_sport_data
+    where f_baidu_uid = #{baiduUid}
+    and f_date>=#{date}
+    order  by f_date
+    DESC LIMIT 1
+  </select>
+
+</mapper>

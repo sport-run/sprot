@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssm.mapper.ParkMapper">
+  <resultMap id="BaseResultMap" type="com.ssm.pojo.Park">
+    <constructor>
+      <idArg column="f_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="f_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="f_perimeter" javaType="java.lang.Long" jdbcType="DECIMAL" />
+      <arg column="f_camera_start" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="f_camera_end" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="f_camera_other" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="f_park_grade" javaType="java.lang.Long" jdbcType="DECIMAL" />
+      <arg column="f_create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="f_update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    f_id, f_name, f_perimeter, f_camera_start, f_camera_end, f_camera_other, f_park_grade, 
+    f_create_time, f_update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_park
+    where f_id = #{id,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="com.ssm.pojo.Park">
+    insert into t_park (f_id, f_name, f_perimeter, 
+      f_camera_start, f_camera_end, f_camera_other, 
+      f_park_grade, f_create_time, f_update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{perimeter,jdbcType=DECIMAL}, 
+      #{cameraStart,jdbcType=VARCHAR}, #{cameraEnd,jdbcType=VARCHAR}, #{cameraOther,jdbcType=VARCHAR}, 
+      #{parkGrade,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ssm.pojo.Park">
+    insert into t_park
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        f_id,
+      </if>
+      <if test="name != null">
+        f_name,
+      </if>
+      <if test="perimeter != null">
+        f_perimeter,
+      </if>
+      <if test="cameraStart != null">
+        f_camera_start,
+      </if>
+      <if test="cameraEnd != null">
+        f_camera_end,
+      </if>
+      <if test="cameraOther != null">
+        f_camera_other,
+      </if>
+      <if test="parkGrade != null">
+        f_park_grade,
+      </if>
+      <if test="createTime != null">
+        f_create_time,
+      </if>
+      <if test="updateTime != null">
+        f_update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="perimeter != null">
+        #{perimeter,jdbcType=DECIMAL},
+      </if>
+      <if test="cameraStart != null">
+        #{cameraStart,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraEnd != null">
+        #{cameraEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraOther != null">
+        #{cameraOther,jdbcType=VARCHAR},
+      </if>
+      <if test="parkGrade != null">
+        #{parkGrade,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ssm.pojo.Park">
+    update t_park
+    <set>
+      <if test="name != null">
+        f_name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="perimeter != null">
+        f_perimeter = #{perimeter,jdbcType=DECIMAL},
+      </if>
+      <if test="cameraStart != null">
+        f_camera_start = #{cameraStart,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraEnd != null">
+        f_camera_end = #{cameraEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="cameraOther != null">
+        f_camera_other = #{cameraOther,jdbcType=VARCHAR},
+      </if>
+      <if test="parkGrade != null">
+        f_park_grade = #{parkGrade,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        f_create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        f_update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where f_id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ssm.pojo.Park">
+    update t_park
+    set f_name = #{name,jdbcType=VARCHAR},
+      f_perimeter = #{perimeter,jdbcType=DECIMAL},
+      f_camera_start = #{cameraStart,jdbcType=VARCHAR},
+      f_camera_end = #{cameraEnd,jdbcType=VARCHAR},
+      f_camera_other = #{cameraOther,jdbcType=VARCHAR},
+      f_park_grade = #{parkGrade,jdbcType=DECIMAL},
+      f_create_time = #{createTime,jdbcType=TIMESTAMP},
+      f_update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where f_id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="generatorConfig.properties"/>
+
+    <context id="ssm" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />
+        <!-- <plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin> -->
+        <commentGenerator>
+            <property name="suppressDate" value="true" />
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+        <!--
+        <jdbcConnection driverClass="oracle.jdbc.driver.OracleDriver" connectionURL="jdbc:oracle:thin:@10.100.1.20:1521:db1"
+          userId="rams_test" password="bangsun">
+        </jdbcConnection>
+        -->
+        <!--<jdbcConnection driverClass="com.mysql.jdbc.Driver"-->
+                        <!--connectionURL="${url}" userId="${username}" password="${password}">-->
+        <!--</jdbcConnection>-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://39.100.79.27:3308/test?useUnicode=true&amp;characterEncoding=utf8&amp;characterSetResults=utf8&amp;useSSL=false"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        <!--model DO对象-->
+        <javaModelGenerator targetPackage="com.ssm.pojo" targetProject="src/main/java">
+            <property name="constructorBased" value="true" />
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!--SQL Mapper-->
+        <sqlMapGenerator targetPackage="com.ssm.sqlmap" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <!--repo java代码-->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.ssm.mapper"
+                             targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+        <!--<table schema="mybatis" tableName="user" domainObjectName="User">-->
+            <!--<property name="constructorBased" value="true" />-->
+            <!--<property name="useActualColumnNames" value="false" />-->
+            <!--<property name="ignoreQualifiersAtRuntime" value="true" />-->
+        <!--</table>-->
+        <!--<table schema="mybatis" tableName="admin" domainObjectName="Admin">-->
+            <!--<property name="constructorBased" value="true" />-->
+            <!--<property name="useActualColumnNames" value="false" />-->
+            <!--<property name="ignoreQualifiersAtRuntime" value="true" />-->
+        <!--</table>-->
+        <!--<table tableName="t_park" domainObjectName="Park"-->
+                <!--enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableDeleteByPrimaryKey="false"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<columnOverride column="f_id" property="id"/>-->
+            <!--<columnOverride column="f_name" property="name"/>-->
+            <!--<columnOverride column="f_perimeter" property="perimeter"/>-->
+            <!--<columnOverride column="f_camera_start" property="cameraStart"/>-->
+            <!--<columnOverride column="f_camera_end" property="cameraEnd"/>-->
+            <!--<columnOverride column="f_camera_other" property="cameraOther"/>-->
+            <!--<columnOverride column="f_park_grade" property="parkGrade"/>-->
+            <!--<columnOverride column="f_create_time" property="createTime"/>-->
+            <!--<columnOverride column="f_update_time" property="updateTime"/>-->
+        <!--</table>-->
+
+        <!--<table tableName="t_sport_date_statistics" domainObjectName="SportDateStatistics"-->
+               <!--enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableDeleteByPrimaryKey="false"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<columnOverride column="f_id" property="id"/>-->
+            <!--<columnOverride column="f_baidu_uid" property="baiduUid"/>-->
+            <!--<columnOverride column="f_uid" property="uid"/>-->
+            <!--<columnOverride column="f_date" property="date"/>-->
+            <!--<columnOverride column="f_count" property="count"/>-->
+            <!--<columnOverride column="f_time" property="time"/>-->
+            <!--<columnOverride column="f_perimeter" property="perimeter"/>-->
+            <!--<columnOverride column="f_create_time" property="createTime"/>-->
+            <!--<columnOverride column="f_update_time" property="updateTime"/>-->
+        <!--</table>-->
+        <table tableName="USER" domainObjectName="user"
+               enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"
+               enableDeleteByPrimaryKey="false"
+               enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"
+               enableSelectByExample="false" selectByExampleQueryId="false">
+        </table>
+        <!--<table tableName="t_sport_data" domainObjectName="SportData"-->
+               <!--enableUpdateByPrimaryKey="true" enableSelectByPrimaryKey="true"-->
+               <!--enableDeleteByPrimaryKey="false"-->
+               <!--enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" selectByExampleQueryId="false">-->
+            <!--<columnOverride column="f_id" property="id"/>-->
+            <!--<columnOverride column="f_uid" property="uid"/>-->
+            <!--<columnOverride column="f_distance" property="distance"/>-->
+            <!--<columnOverride column="f_date" property="date"/>-->
+            <!--<columnOverride column="f_sport_time" property="sportTime"/>-->
+            <!--<columnOverride column="f_max_speed" property="maxSpeed"/>-->
+            <!--<columnOverride column="f_energy_metabolism" property="energyMetabolism"/>-->
+            <!--<columnOverride column="f_energy_expenditure" property="energyExpenditure"/>-->
+
+            <!--<columnOverride column="f_create_time" property="createTime"/>-->
+            <!--<columnOverride column="f_update_time" property="updateTime"/>-->
+        <!--</table>-->
+    </context>
+</generatorConfiguration>
